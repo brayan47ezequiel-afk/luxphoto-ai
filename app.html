@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxPhoto AI</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  background: rgba(0,0,0,0.4);
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+button {
+  background: #00c6ff;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+}
+
+button:hover {
+  background: #0094cc;
+}
+
+input {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+}
+
+#preview {
+  margin-top: 15px;
+  max-width: 100%;
+  border-radius: 10px;
+  display: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>LuxPhoto AI</h1>
+
+<p>Envie sua foto</p>
+
+<input type="file" id="upload" accept="image/*">
+
+<img id="preview">
+
+<button onclick="processImage()">Melhorar Foto</button>
+
+<p id="status"></p>
+
+</div>
+
+<script>
+
+const upload = document.getElementById("upload");
+const preview = document.getElementById("preview");
+const statusText = document.getElementById("status");
+
+upload.addEventListener("change", function(){
+
+  const file = this.files[0];
+
+  if(file){
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+
+      preview.src = e.target.result;
+      preview.style.display = "block";
+
+    }
+
+    reader.readAsDataURL(file);
+
+    statusText.innerText = "Foto carregada com sucesso.";
+
+  }
+
+});
+
+function processImage(){
+
+  if(!preview.src){
+
+    statusText.innerText = "Envie uma foto primeiro.";
+    return;
+
+  }
+
+  statusText.innerText = "Processando com IA...";
+
+  setTimeout(function(){
+
+    statusText.innerText = "Foto melhorada com sucesso!";
+
+  }, 2000);
+
+}
+
+</script>
+
+</body>
+</html>

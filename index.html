@@ -1,73 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>LuxPhoto AI</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxPhoto AI</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #7b00ff, #2e005f);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+text-align: center;
+}
 
-    .card {
-      background: rgba(0,0,0,0.25);
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-    }
+.container {
+background: rgba(0,0,0,0.5);
+padding: 30px;
+border-radius: 15px;
+}
 
-    h1 {
-      margin-bottom: 10px;
-    }
+button {
+padding: 15px 25px;
+font-size: 18px;
+border: none;
+border-radius: 10px;
+background: #00c6ff;
+color: white;
+cursor: pointer;
+}
 
-    p {
-      margin-bottom: 25px;
-    }
+button:hover {
+background: #0072ff;
+}
+</style>
 
-    button {
-      background: white;
-      color: #7b00ff;
-      border: none;
-      padding: 15px 30px;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-  </style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>LuxPhoto AI</h1>
+<div class="container">
+<h1>LuxPhoto AI</h1>
+<p>Sua IA de fotos profissionais</p>
 
-    <p>
-      Seu aplicativo de fotos com Inteligência Artificial para redes sociais.
-    </p>
+<button onclick="alert('LuxPhoto AI funcionando!')">
+Testar LuxPhoto AI
+</button>
 
-    <button onclick="entrar()">Entrar</button>
-  </div>
-
-  <script>
-    function entrar() {
-      window.location.href = "app.html";
-    }
-  </script>
+</div>
 
 </body>
 </html>

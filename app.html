@@ -1,101 +1,154 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxPhoto AI</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-.container {
-  text-align: center;
-  background: rgba(0,0,0,0.4);
-  padding: 30px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 400px;
-}
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      text-align: center;
+      background: #020617;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
 
-button {
-  background: #00c6ff;
-  border: none;
-  padding: 15px;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 15px;
-  width: 100%;
-}
+    h1 {
+      margin-bottom: 10px;
+    }
 
-button:hover {
-  background: #0094cc;
-}
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
 
-img {
-  margin-top: 20px;
-  max-width: 100%;
-  border-radius: 10px;
-}
-</style>
+    input[type="file"] {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
 
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #38bdf8;
+    }
+  </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<h1>LuxPhoto AI</h1>
+  <h1>LuxPhoto AI</h1>
+  <p>Upload your photo and enhance it with AI</p>
 
-<p>Envie sua foto e melhore com IA</p>
+  <input type="file" id="fileInput" accept="image/*">
 
-<input type="file" id="upload">
+  <button onclick="handleUpload()">Enhance Photo</button>
 
-<button onclick="melhorar()">Melhorar Foto</button>
+  <div class="status" id="status"></div>
 
-<img id="resultado">
+  <img id="preview">
 
 </div>
 
 <script>
 
-function melhorar() {
+let selectedFile = null;
 
-const input = document.getElementById("upload");
-const resultado = document.getElementById("resultado");
+const fileInput = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const statusText = document.getElementById("status");
 
-if(input.files.length > 0){
+fileInput.addEventListener("change", function(event) {
 
-const file = input.files[0];
+  selectedFile = event.target.files[0];
 
-const reader = new FileReader();
+  if (!selectedFile) return;
 
-reader.onload = function(e){
+  const reader = new FileReader();
 
-resultado.src = e.target.result;
+  reader.onload = function(e) {
 
-alert("Foto melhorada com sucesso!");
+    preview.src = e.target.result;
+    preview.style.display = "block";
+
+  };
+
+  reader.readAsDataURL(selectedFile);
+
+});
+
+async function handleUpload() {
+
+  if (!selectedFile) {
+
+    statusText.innerText = "Please select a photo first.";
+    return;
+
+  }
+
+  statusText.innerText = "Processing with AI...";
+
+  try {
+
+    await fakeAIProcess();
+
+    statusText.innerText = "Photo enhanced successfully.";
+
+  }
+  catch (error) {
+
+    statusText.innerText = "Error processing photo.";
+
+  }
 
 }
 
-reader.readAsDataURL(file);
+function fakeAIProcess() {
 
-}
+  return new Promise(resolve => {
 
-else{
+    setTimeout(resolve, 2000);
 
-alert("Escolha uma foto primeiro.");
-
-}
+  });
 
 }
 

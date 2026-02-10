@@ -1,137 +1,94 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title>
+<title>LuxPhoto AI</title><style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: Arial, sans-serif;
+}
 
-<style>
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
 }
 
 .container {
-  text-align: center;
-  background: rgba(0,0,0,0.4);
-  padding: 20px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 400px;
+text-align: center;
+background: rgba(0,0,0,0.4);
+padding: 30px;
+border-radius: 15px;
+width: 90%;
+max-width: 400px;
 }
 
 h1 {
-  margin-bottom: 10px;
+margin-bottom: 10px;
 }
 
-button {
-  background: #00c6ff;
-  border: none;
-  padding: 15px;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 15px;
-  width: 100%;
-}
-
-button:hover {
-  background: #0094cc;
+p {
+margin-bottom: 20px;
+font-size: 14px;
+opacity: 0.8;
 }
 
 input {
-  margin-top: 15px;
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border-radius: 8px;
+border: none;
 }
 
-#preview {
-  margin-top: 15px;
-  max-width: 100%;
-  border-radius: 10px;
-  display: none;
+button {
+width: 100%;
+padding: 12px;
+border: none;
+border-radius: 8px;
+background: #00c6ff;
+color: white;
+font-size: 16px;
+cursor: pointer;
 }
-</style>
 
-</head>
+button:hover {
+background: #0072ff;
+}
 
-<body>
-
-<div class="container">
-
+#resultado {
+margin-top: 20px;
+font-size: 14px;
+opacity: 0.9;
+}
+</style></head>
+<body><div class="container">
 <h1>LuxPhoto AI</h1>
+<p>Envie sua foto e receba melhoria com IA</p><input type="file" id="foto"><button onclick="processar()">Melhorar Foto</button>
 
-<p>Envie sua foto</p>
+<div id="resultado"></div>
+</div><script>
+function processar() {
 
-<input type="file" id="upload" accept="image/*">
+const input = document.getElementById("foto");
+const resultado = document.getElementById("resultado");
 
-<img id="preview">
-
-<button onclick="processImage()">Melhorar Foto</button>
-
-<p id="status"></p>
-
-</div>
-
-<script>
-
-const upload = document.getElementById("upload");
-const preview = document.getElementById("preview");
-const statusText = document.getElementById("status");
-
-upload.addEventListener("change", function(){
-
-  const file = this.files[0];
-
-  if(file){
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-
-      preview.src = e.target.result;
-      preview.style.display = "block";
-
-    }
-
-    reader.readAsDataURL(file);
-
-    statusText.innerText = "Foto carregada com sucesso.";
-
-  }
-
-});
-
-function processImage(){
-
-  if(!preview.src){
-
-    statusText.innerText = "Envie uma foto primeiro.";
-    return;
-
-  }
-
-  statusText.innerText = "Processando com IA...";
-
-  setTimeout(function(){
-
-    statusText.innerText = "Foto melhorada com sucesso!";
-
-  }, 2000);
-
+if (!input.files.length) {
+resultado.innerHTML = "Por favor, selecione uma foto primeiro.";
+return;
 }
 
-</script>
+resultado.innerHTML = "Processando com IA...";
 
-</body>
+setTimeout(() => {
+resultado.innerHTML = "Sua foto foi melhorada com sucesso! (simulação)";
+}, 2000);
+
+}
+</script></body>
 </html>

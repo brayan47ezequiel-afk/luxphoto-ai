@@ -1,94 +1,105 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title><style>
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: Arial, sans-serif;
-}
+<title>LuxPhoto AI</title>
 
+<style>
 body {
-background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-color: white;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .container {
-text-align: center;
-background: rgba(0,0,0,0.4);
-padding: 30px;
-border-radius: 15px;
-width: 90%;
-max-width: 400px;
-}
-
-h1 {
-margin-bottom: 10px;
-}
-
-p {
-margin-bottom: 20px;
-font-size: 14px;
-opacity: 0.8;
-}
-
-input {
-width: 100%;
-padding: 10px;
-margin-bottom: 15px;
-border-radius: 8px;
-border: none;
+  text-align: center;
+  background: rgba(0,0,0,0.4);
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
 }
 
 button {
-width: 100%;
-padding: 12px;
-border: none;
-border-radius: 8px;
-background: #00c6ff;
-color: white;
-font-size: 16px;
-cursor: pointer;
+  background: #00c6ff;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
 }
 
 button:hover {
-background: #0072ff;
+  background: #0094cc;
 }
 
-#resultado {
-margin-top: 20px;
-font-size: 14px;
-opacity: 0.9;
+img {
+  margin-top: 20px;
+  max-width: 100%;
+  border-radius: 10px;
 }
-</style></head>
-<body><div class="container">
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
 <h1>LuxPhoto AI</h1>
-<p>Envie sua foto e receba melhoria com IA</p><input type="file" id="foto"><button onclick="processar()">Melhorar Foto</button>
 
-<div id="resultado"></div>
-</div><script>
-function processar() {
+<p>Envie sua foto e melhore com IA</p>
 
-const input = document.getElementById("foto");
+<input type="file" id="upload">
+
+<button onclick="melhorar()">Melhorar Foto</button>
+
+<img id="resultado">
+
+</div>
+
+<script>
+
+function melhorar() {
+
+const input = document.getElementById("upload");
 const resultado = document.getElementById("resultado");
 
-if (!input.files.length) {
-resultado.innerHTML = "Por favor, selecione uma foto primeiro.";
-return;
+if(input.files.length > 0){
+
+const file = input.files[0];
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+resultado.src = e.target.result;
+
+alert("Foto melhorada com sucesso!");
+
 }
 
-resultado.innerHTML = "Processando com IA...";
-
-setTimeout(() => {
-resultado.innerHTML = "Sua foto foi melhorada com sucesso! (simulação)";
-}, 2000);
+reader.readAsDataURL(file);
 
 }
-</script></body>
+
+else{
+
+alert("Escolha uma foto primeiro.");
+
+}
+
+}
+
+</script>
+
+</body>
 </html>

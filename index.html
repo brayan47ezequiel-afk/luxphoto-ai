@@ -1,83 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LuxPhoto AI</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  text-align: center;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #7b00ff, #2e005f);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-.container {
-  background: rgba(0,0,0,0.5);
-  padding: 30px;
-  border-radius: 15px;
-  width: 90%;
-  max-width: 400px;
-}
+    .card {
+      background: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
 
-h1 {
-  margin-bottom: 10px;
-}
+    h1 {
+      margin-bottom: 10px;
+    }
 
-p {
-  margin-bottom: 20px;
-}
+    p {
+      margin-bottom: 20px;
+    }
 
-button {
-  padding: 15px 25px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  background: #00c6ff;
-  color: white;
-  cursor: pointer;
-  width: 100%;
-}
+    button {
+      background: white;
+      color: #7b00ff;
+      border: none;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
 
-button:hover {
-  background: #0072ff;
-}
+    button:hover {
+      opacity: 0.9;
+    }
 
-#status {
-  margin-top: 15px;
-  font-size: 14px;
-  opacity: 0.8;
-}
-</style>
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
+  </style>
 </head>
 
 <body>
 
-<div class="container">
+  <div class="card">
 
-<h1>LuxPhoto AI</h1>
+    <h1>LuxPhoto AI</h1>
 
-<p>Sua IA de fotos profissionais</p>
+    <p>Aplicativo de fotos com Inteligência Artificial</p>
 
-<button onclick="startApp()">Iniciar</button>
+    <button onclick="iniciar()">Iniciar</button>
 
-<div id="status"></div>
+    <div id="status"></div>
 
-</div>
+  </div>
 
-<script>
-function startApp() {
-  document.getElementById("status").innerText = "LuxPhoto AI iniciada com sucesso.";
-  console.log("LuxPhoto AI funcionando");
-}
-</script>
+  <script>
+
+    function iniciar() {
+      document.getElementById("status").innerText =
+        "Aplicativo iniciado com sucesso.";
+    }
+
+  </script>
 
 </body>
+
 </html>

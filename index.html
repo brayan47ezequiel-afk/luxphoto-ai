@@ -1,78 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuxPhoto AI</title>
+  <meta charset="UTF-8">
+  <title>LuxPhoto AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #6a00ff, #b000ff);
-            color: white;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #7b00ff, #2e005f);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        .container {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-        }
+    .card {
+      background: rgba(0,0,0,0.25);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
 
-        h1 {
-            margin-bottom: 10px;
-        }
+    h1 {
+      margin-bottom: 10px;
+    }
 
-        p {
-            margin-bottom: 20px;
-        }
+    p {
+      margin-bottom: 25px;
+    }
 
-        button {
-            background: #ffffff;
-            color: #6a00ff;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    button {
+      background: white;
+      color: #7b00ff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        button:hover {
-            opacity: 0.8;
-        }
-    </style>
-
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div class="container">
+  <div class="card">
+    <h1>LuxPhoto AI</h1>
 
-        <h1>LuxPhoto AI</h1>
+    <p>
+      Seu aplicativo de fotos com Inteligência Artificial para redes sociais.
+    </p>
 
-        <p>
-            Seu aplicativo de fotos com Inteligência Artificial para redes sociais.
-        </p>
+    <button onclick="entrar()">Entrar</button>
+  </div>
 
-        <button onclick="iniciarApp()">Entrar</button>
-
-    </div>
-
-    <script>
-        function iniciarApp() {
-            alert("LuxPhoto AI iniciado com sucesso!");
-        }
-    </script>
+  <script>
+    function entrar() {
+      window.location.href = "app.html";
+    }
+  </script>
 
 </body>
-
 </html>

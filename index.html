@@ -3,88 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>LuxPhoto AI</title>
 
 <style>
-
 body{
 margin:0;
-font-family:Arial;
-background:linear-gradient(180deg,#0f2027,#203a43,#2c5364);
+font-family:Arial, sans-serif;
+background:#0f172a;
 color:white;
+text-align:center;
 }
 
 header{
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-background:rgba(0,0,0,0.3);
-}
-
-nav{
-display:flex;
-justify-content:space-around;
-background:rgba(0,0,0,0.4);
-padding:10px;
-}
-
-nav button{
-background:none;
-border:none;
-color:white;
-font-size:16px;
-}
-
-.page{
-display:none;
 padding:20px;
-}
-
-.active{
-display:block;
+font-size:28px;
+font-weight:bold;
+background:#020617;
 }
 
 .container{
-background:rgba(0,0,0,0.4);
 padding:20px;
-border-radius:15px;
-margin-top:15px;
 }
 
-button.primary{
-background:#1e90ff;
+input{
+margin:20px;
+}
+
+button{
+background:#2563eb;
 border:none;
 padding:15px;
-border-radius:10px;
 color:white;
 font-size:16px;
-width:100%;
-margin-top:10px;
+border-radius:10px;
+margin:10px;
+width:80%;
+max-width:300px;
 }
 
 .preview img{
-width:100px;
+width:90%;
+max-width:300px;
+margin:10px;
 border-radius:10px;
-margin:5px;
 }
-
-.template img{
-width:100%;
-border-radius:10px;
-margin-top:10px;
-}
-
-textarea{
-width:100%;
-height:80px;
-border-radius:10px;
-border:none;
-padding:10px;
-margin-top:10px;
-}
-
 </style>
 
 </head>
@@ -94,131 +56,37 @@ margin-top:10px;
 LuxPhoto AI
 </header>
 
-<nav>
-
-<button onclick="showPage('home')">Home</button>
-
-<button onclick="showPage('create')">Criar</button>
-
-<button onclick="showPage('gallery')">Galeria</button>
-
-</nav>
-
-
-<!-- HOME -->
-<div id="home" class="page active">
-
 <div class="container">
 
-<h2>Bem-vindo</h2>
+<h2>Selecione sua foto</h2>
 
-<p>
-Crie fotos profissionais com IA.
-</p>
+<input type="file" id="fileInput" accept="image/*">
 
-<button class="primary" onclick="showPage('create')">
-Começar
-</button>
+<div id="preview" class="preview"></div>
+
+<button>Gerar imagem</button>
 
 </div>
-
-</div>
-
-
-
-<!-- CREATE -->
-<div id="create" class="page">
-
-<div class="container">
-
-<h2>Enviar fotos</h2>
-
-<input type="file" id="fileInput" multiple accept="image/*">
-
-<div class="preview" id="preview"></div>
-
-<textarea id="prompt"
-placeholder="Descreva o que deseja. Ex: Eu em uma BMW na praia ao pôr do sol">
-</textarea>
-
-<button class="primary" onclick="enviar()">
-Gerar imagem
-</button>
-
-<p id="status"></p>
-
-</div>
-
-</div>
-
-
-
-<!-- GALLERY -->
-<div id="gallery" class="page">
-
-<div class="container">
-
-<h2>Templates</h2>
-
-<div class="template">
-<img src="https://images.unsplash.com/photo-1555215695-3004980ad54a">
-<p>BMW Luxo</p>
-</div>
-
-<div class="template">
-<img src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6">
-<p>Moto BMW</p>
-</div>
-
-<div class="template">
-<img src="https://images.unsplash.com/photo-1549921296-3ecf9fba6f7c">
-<p>Carro esportivo</p>
-</div>
-
-</div>
-
-</div>
-
-
 
 <script>
 
-let fotos=[];
+const input = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
 
-function showPage(page){
+input.addEventListener("change", function(){
 
-document.querySelectorAll(".page").forEach(p=>{
+preview.innerHTML = "";
 
-p.classList.remove("active");
+const file = this.files[0];
 
-});
+if(file){
 
-document.getElementById(page).classList.add("active");
+const reader = new FileReader();
 
-}
+reader.onload = function(e){
 
-
-
-document.getElementById("fileInput").addEventListener("change",function(){
-
-const preview=document.getElementById("preview");
-
-preview.innerHTML="";
-
-fotos=[];
-
-for(let file of this.files){
-
-fotos.push(file);
-
-const reader=new FileReader();
-
-reader.onload=function(e){
-
-const img=document.createElement("img");
-
-img.src=e.target.result;
-
+const img = document.createElement("img");
+img.src = e.target.result;
 preview.appendChild(img);
 
 }
@@ -228,32 +96,6 @@ reader.readAsDataURL(file);
 }
 
 });
-
-
-
-function enviar(){
-
-const prompt=document.getElementById("prompt").value;
-
-if(fotos.length==0){
-
-document.getElementById("status").innerText="Envie uma foto.";
-
-return;
-
-}
-
-if(prompt==""){
-
-document.getElementById("status").innerText="Digite o prompt.";
-
-return;
-
-}
-
-document.getElementById("status").innerText="Pronto para conectar com IA.";
-
-}
 
 </script>
 

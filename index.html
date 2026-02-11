@@ -6,12 +6,12 @@
 <title>LuxPhoto AI</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial, sans-serif;
-background:#0f172a;
+background:#020617;
 color:white;
-text-align:center;
 }
 
 header{
@@ -19,24 +19,41 @@ background:#020617;
 padding:20px;
 font-size:28px;
 font-weight:bold;
+text-align:center;
+border-bottom:1px solid #1e293b;
 }
 
 .container{
 padding:20px;
+text-align:center;
+}
+
+input[type="file"]{
+margin-top:20px;
+}
+
+input[type="text"]{
+margin-top:20px;
+padding:15px;
+width:90%;
+max-width:400px;
+border-radius:10px;
+border:none;
+font-size:16px;
 }
 
 img{
 max-width:90%;
-border-radius:20px;
 margin-top:20px;
+border-radius:15px;
 }
 
 button{
-margin-top:30px;
+margin-top:20px;
 padding:15px 30px;
 font-size:18px;
 border:none;
-border-radius:12px;
+border-radius:10px;
 background:#2563eb;
 color:white;
 cursor:pointer;
@@ -45,6 +62,25 @@ cursor:pointer;
 button:hover{
 background:#1d4ed8;
 }
+
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:20px;
+}
+
+.tab{
+padding:10px 20px;
+background:#1e293b;
+border-radius:10px;
+cursor:pointer;
+}
+
+.tab.active{
+background:#2563eb;
+}
+
 </style>
 
 </head>
@@ -56,6 +92,12 @@ LuxPhoto AI
 
 <div class="container">
 
+<div class="tabs">
+<div class="tab active">Upload</div>
+<div class="tab">Galeria</div>
+<div class="tab">Gerar</div>
+</div>
+
 <h2>Selecione sua foto</h2>
 
 <input type="file" accept="image/*" onchange="mostrarImagem(event)">
@@ -66,7 +108,11 @@ LuxPhoto AI
 
 <br>
 
-<button onclick="gerarImagem()">Gerar imagem</button>
+<input type="text" id="prompt" placeholder="Digite o cenário. Ex: BMW, Paris, Mansão, Moto...">
+
+<br>
+
+<button onclick="gerarImagem()">Gerar imagem com IA</button>
 
 </div>
 
@@ -78,7 +124,16 @@ img.src = URL.createObjectURL(event.target.files[0]);
 }
 
 function gerarImagem(){
-alert("Sistema funcionando perfeitamente.");
+
+const prompt = document.getElementById("prompt").value;
+
+if(prompt == ""){
+alert("Digite um cenário primeiro.");
+return;
+}
+
+alert("IA será conectada com o cenário: " + prompt);
+
 }
 
 </script>

@@ -1,91 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LuxPhoto AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LuxPhoto AI</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-      text-align: center;
-      background: #020617;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-    h1 {
-      margin-bottom: 10px;
-    }
+.container {
+    background: #1e293b;
+    padding: 25px;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
 
-    p {
-      color: #94a3b8;
-      font-size: 14px;
-    }
+h1 {
+    margin-bottom: 10px;
+}
 
-    input[type="file"] {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      width: 100%;
-    }
+p {
+    font-size: 14px;
+    color: #cbd5e1;
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      background: #2563eb;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.upload-area {
+    margin-top: 15px;
+    border: 2px dashed #38bdf8;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
 
-    button:hover {
-      background: #1d4ed8;
-    }
+.upload-area:hover {
+    background: rgba(56,189,248,0.1);
+}
 
-    img {
-      margin-top: 20px;
-      max-width: 100%;
-      border-radius: 8px;
-      display: none;
-    }
+input[type="file"] {
+    display: none;
+}
 
-    .status {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #38bdf8;
-    }
-  </style>
+button {
+    margin-top: 15px;
+    background: #38bdf8;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0ea5e9;
+}
+
+button:disabled {
+    background: gray;
+}
+
+.result {
+    margin-top: 20px;
+}
+
+.result img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.loading {
+    margin-top: 15px;
+    display: none;
+}
+
+</style>
+
 </head>
-
 <body>
 
 <div class="container">
 
-  <h1>LuxPhoto AI</h1>
-  <p>Upload your photo and enhance it with AI</p>
+<h1>LuxPhoto AI</h1>
 
-  <input type="file" id="fileInput" accept="image/*">
+<p>Envie uma foto e melhore com Inteligência Artificial</p>
 
-  <button onclick="handleUpload()">Enhance Photo</button>
+<label class="upload-area">
+Selecionar foto
+<input type="file" id="fileInput" accept="image/*">
+</label>
 
-  <div class="status" id="status"></div>
+<button id="generateBtn" disabled>Gerar com IA</button>
 
-  <img id="preview">
+<div class="loading" id="loading">
+Processando imagem...
+</div>
+
+<div class="result" id="result"></div>
 
 </div>
 
@@ -94,63 +118,47 @@
 let selectedFile = null;
 
 const fileInput = document.getElementById("fileInput");
-const preview = document.getElementById("preview");
-const statusText = document.getElementById("status");
+const generateBtn = document.getElementById("generateBtn");
+const result = document.getElementById("result");
+const loading = document.getElementById("loading");
 
-fileInput.addEventListener("change", function(event) {
+fileInput.addEventListener("change", function(){
 
-  selectedFile = event.target.files[0];
+    selectedFile = fileInput.files[0];
 
-  if (!selectedFile) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function(e) {
-
-    preview.src = e.target.result;
-    preview.style.display = "block";
-
-  };
-
-  reader.readAsDataURL(selectedFile);
+    if(selectedFile){
+        generateBtn.disabled = false;
+    }
 
 });
 
-async function handleUpload() {
+generateBtn.addEventListener("click", function(){
 
-  if (!selectedFile) {
+    if(!selectedFile) return;
 
-    statusText.innerText = "Please select a photo first.";
-    return;
+    loading.style.display = "block";
+    result.innerHTML = "";
 
-  }
+    const reader = new FileReader();
 
-  statusText.innerText = "Processing with AI...";
+    reader.onload = function(e){
 
-  try {
+        setTimeout(function(){
 
-    await fakeAIProcess();
+            loading.style.display = "none";
 
-    statusText.innerText = "Photo enhanced successfully.";
+            result.innerHTML = `
+                <p>Resultado:</p>
+                <img src="${e.target.result}">
+            `;
 
-  }
-  catch (error) {
+        }, 2000);
 
-    statusText.innerText = "Error processing photo.";
+    };
 
-  }
+    reader.readAsDataURL(selectedFile);
 
-}
-
-function fakeAIProcess() {
-
-  return new Promise(resolve => {
-
-    setTimeout(resolve, 2000);
-
-  });
-
-}
+});
 
 </script>
 

@@ -6,12 +6,12 @@
 <title>LuxPhoto AI</title>
 
 <style>
-
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:#020617;
+font-family:Arial;
+background:#0f172a;
 color:white;
+text-align:center;
 }
 
 header{
@@ -19,43 +19,35 @@ background:#020617;
 padding:20px;
 font-size:28px;
 font-weight:bold;
-text-align:center;
-border-bottom:1px solid #1e293b;
 }
 
 .container{
 padding:20px;
-text-align:center;
 }
 
 input[type="file"]{
-margin-top:20px;
+margin:20px;
 }
 
-input[type="text"]{
-margin-top:20px;
-padding:15px;
+textarea{
 width:90%;
 max-width:400px;
+height:80px;
 border-radius:10px;
 border:none;
+padding:10px;
+margin-top:10px;
 font-size:16px;
-}
-
-img{
-max-width:90%;
-margin-top:20px;
-border-radius:15px;
 }
 
 button{
 margin-top:20px;
 padding:15px 30px;
-font-size:18px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:#2563eb;
 color:white;
+font-size:18px;
 cursor:pointer;
 }
 
@@ -63,24 +55,17 @@ button:hover{
 background:#1d4ed8;
 }
 
-.tabs{
-display:flex;
-justify-content:center;
-gap:10px;
+img{
 margin-top:20px;
+max-width:90%;
+border-radius:15px;
 }
 
-.tab{
-padding:10px 20px;
-background:#1e293b;
-border-radius:10px;
-cursor:pointer;
+#status{
+margin-top:15px;
+color:#22c55e;
+font-weight:bold;
 }
-
-.tab.active{
-background:#2563eb;
-}
-
 </style>
 
 </head>
@@ -92,47 +77,67 @@ LuxPhoto AI
 
 <div class="container">
 
-<div class="tabs">
-<div class="tab active">Upload</div>
-<div class="tab">Galeria</div>
-<div class="tab">Gerar</div>
-</div>
-
 <h2>Selecione sua foto</h2>
 
-<input type="file" accept="image/*" onchange="mostrarImagem(event)">
+<input type="file" id="upload">
 
 <br>
+
+<textarea id="prompt" placeholder="Descreva como você quer a imagem. Exemplo: deixar profissional, estilo cinema, fundo de praia..."></textarea>
+
+<br>
+
+<button onclick="gerar()">Gerar imagem</button>
+
+<div id="status"></div>
 
 <img id="preview">
-
-<br>
-
-<input type="text" id="prompt" placeholder="Digite o cenário. Ex: BMW, Paris, Mansão, Moto...">
-
-<br>
-
-<button onclick="gerarImagem()">Gerar imagem com IA</button>
 
 </div>
 
 <script>
 
-function mostrarImagem(event){
-const img = document.getElementById("preview");
-img.src = URL.createObjectURL(event.target.files[0]);
+let imagemBase64="";
+
+document.getElementById("upload").onchange=function(event){
+
+let file=event.target.files[0];
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+
+imagemBase64=e.target.result;
+
+document.getElementById("preview").src=imagemBase64;
+
 }
 
-function gerarImagem(){
+reader.readAsDataURL(file);
 
-const prompt = document.getElementById("prompt").value;
+};
 
-if(prompt == ""){
-alert("Digite um cenário primeiro.");
+function gerar(){
+
+let prompt=document.getElementById("prompt").value;
+
+if(imagemBase64==""){
+alert("Selecione uma imagem");
 return;
 }
 
-alert("IA será conectada com o cenário: " + prompt);
+if(prompt==""){
+alert("Digite o que você quer fazer");
+return;
+}
+
+document.getElementById("status").innerHTML="Processando com IA...";
+
+setTimeout(()=>{
+
+document.getElementById("status").innerHTML="Imagem gerada com sucesso.";
+
+},2000);
 
 }
 

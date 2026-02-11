@@ -6,147 +6,113 @@
 <title>LuxPhoto AI</title>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial;
-background:linear-gradient(135deg,#6a00ff,#9c27ff);
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 text-align:center;
 }
 
-/* TELA INICIAL */
-
-#telaInicial{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-}
-
-#botaoEntrar{
-background:#00c3ff;
-border:none;
-padding:15px 30px;
-font-size:20px;
-color:white;
-border-radius:10px;
-cursor:pointer;
-}
-
-/* TELA APP */
-
-#telaApp{
-display:none;
+.container{
+margin-top:50px;
+background:rgba(0,0,0,0.4);
 padding:20px;
+border-radius:15px;
+width:90%;
+max-width:400px;
+margin-left:auto;
+margin-right:auto;
 }
 
-#upload{
-margin:20px;
+button{
+background:#1e88ff;
+border:none;
+padding:15px;
+border-radius:10px;
+color:white;
+font-size:18px;
+margin-top:15px;
+width:100%;
 }
 
-#galeria{
+button:hover{
+background:#0066ff;
+}
+
+#preview{
+margin-top:20px;
 display:flex;
 flex-wrap:wrap;
 justify-content:center;
 gap:10px;
 }
 
-.imagem{
-width:150px;
-height:150px;
+#preview img{
+width:100px;
+height:100px;
 object-fit:cover;
 border-radius:10px;
 }
-
-.botao{
-background:#00c3ff;
-border:none;
-padding:12px 25px;
-font-size:18px;
-color:white;
-border-radius:10px;
-cursor:pointer;
-margin-top:20px;
-}
-
 </style>
 
 </head>
 <body>
 
-<!-- TELA INICIAL -->
-
-<div id="telaInicial">
+<div class="container">
 
 <h1>LuxPhoto AI</h1>
 
-<p>Melhore suas fotos com Inteligência Artificial</p>
+<input type="file" id="fileInput" multiple accept="image/*">
 
-<button id="botaoEntrar" onclick="entrar()">Entrar</button>
+<button onclick="carregarFotos()">
+Carregar foto
+</button>
 
-</div>
+<p id="status"></p>
 
-<!-- TELA APP -->
-
-<div id="telaApp">
-
-<h2>Envie suas fotos</h2>
-
-<input type="file" id="upload" multiple accept="image/*">
-
-<div id="galeria"></div>
-
-<button class="botao" onclick="melhorar()">Melhorar Fotos</button>
+<div id="preview"></div>
 
 </div>
 
 <script>
 
-function entrar(){
+function carregarFotos(){
 
-document.getElementById("telaInicial").style.display="none";
+const input = document.getElementById("fileInput");
+const preview = document.getElementById("preview");
+const status = document.getElementById("status");
 
-document.getElementById("telaApp").style.display="block";
+preview.innerHTML = "";
 
+if(input.files.length === 0){
+status.innerText = "Selecione uma foto primeiro.";
+return;
 }
 
-const upload = document.getElementById("upload");
+status.innerText = "Carregando...";
 
-const galeria = document.getElementById("galeria");
+for(let i=0; i<input.files.length; i++){
 
-upload.addEventListener("change", function(){
+const file = input.files[i];
 
-galeria.innerHTML="";
+const reader = new FileReader();
 
-const arquivos = upload.files;
-
-for(let i=0;i<arquivos.length;i++){
-
-const leitor = new FileReader();
-
-leitor.onload=function(e){
+reader.onload = function(e){
 
 const img = document.createElement("img");
 
-img.src=e.target.result;
+img.src = e.target.result;
 
-img.className="imagem";
-
-galeria.appendChild(img);
+preview.appendChild(img);
 
 }
 
-leitor.readAsDataURL(arquivos[i]);
+reader.readAsDataURL(file);
 
 }
 
-});
-
-function melhorar(){
-
-alert("Função de melhoria será ativada na próxima etapa.");
+status.innerText = "Fotos carregadas com sucesso.";
 
 }
 

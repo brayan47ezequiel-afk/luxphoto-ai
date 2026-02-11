@@ -10,23 +10,18 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0f0f0f;
+background:#0a0a0a;
 color:white;
-}
-
-header{
-background:#000;
-padding:15px;
-text-align:center;
-font-size:20px;
-font-weight:bold;
 }
 
 nav{
 display:flex;
 justify-content:space-around;
 background:#111;
-padding:10px;
+padding:15px;
+position:fixed;
+width:100%;
+bottom:0;
 }
 
 nav button{
@@ -39,41 +34,46 @@ font-size:16px;
 .page{
 display:none;
 padding:20px;
+padding-bottom:80px;
 }
 
 .active{
 display:block;
 }
 
-.upload{
-border:2px dashed #555;
-padding:40px;
-text-align:center;
-margin-top:20px;
+h1{
+font-size:28px;
+}
+
+button.main{
+background:linear-gradient(45deg,#00c6ff,#0072ff);
+border:none;
+padding:15px;
+color:white;
+border-radius:10px;
+width:100%;
+margin-top:10px;
+font-size:16px;
 }
 
 input, textarea{
 width:100%;
-padding:10px;
+padding:12px;
 margin-top:10px;
+border-radius:8px;
+border:none;
 background:#222;
-border:none;
 color:white;
-}
-
-button.main{
-background:#0066ff;
-color:white;
-padding:15px;
-border:none;
-margin-top:20px;
-width:100%;
-font-size:16px;
 }
 
 img{
-max-width:100%;
+width:100%;
+border-radius:10px;
 margin-top:10px;
+}
+
+.scenario{
+margin-top:15px;
 }
 
 </style>
@@ -81,79 +81,115 @@ margin-top:10px;
 </head>
 <body>
 
-<header>
-LuxPhoto AI
-</header>
+<!-- INICIO -->
+<div id="inicio" class="page active">
 
-<nav>
-<button onclick="showPage('home')">Início</button>
-<button onclick="showPage('create')">Criar</button>
-<button onclick="showPage('scenarios')">Cenários</button>
-<button onclick="showPage('profile')">Perfil</button>
-</nav>
+<h1>LuxPhoto AI</h1>
 
-<div id="home" class="page active">
-<h2>Bem-vindo ao LuxPhoto AI</h2>
-<p>Transforme suas fotos em fotos profissionais com IA.</p>
-</div>
+<p>
+Transforme suas fotos em fotos profissionais com inteligência artificial.
+</p>
 
-<div id="create" class="page">
+<img src="https://images.unsplash.com/photo-1517949908114-721b3d7a55f0">
 
-<h2>Criar Foto</h2>
-
-<input type="file" id="photoInput" multiple accept="image/*">
-
-<textarea placeholder="Descreva o que você quer..."></textarea>
-
-<div id="preview"></div>
-
-<button class="main">Gerar com IA</button>
+<button class="main" onclick="goPage('criar')">
+Começar agora
+</button>
 
 </div>
 
-<div id="scenarios" class="page">
+<!-- CRIAR -->
+<div id="criar" class="page">
 
-<h2>Cenários</h2>
+<h1>Criar Foto com IA</h1>
 
-<img src="https://images.unsplash.com/photo-1555215695-3004980ad54a">
-<img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc">
+<input type="file" accept="image/*" id="upload">
+
+<textarea id="prompt" placeholder="Ex: eu em uma BMW, foto profissional, realista"></textarea>
+
+<button class="main" onclick="generateAI()">
+Gerar com IA
+</button>
+
+<div id="result"></div>
 
 </div>
 
-<div id="profile" class="page">
+<!-- CENARIOS -->
+<div id="cenarios" class="page">
 
-<h2>Perfil</h2>
+<h1>Cenários</h1>
+
+<p>Escolha um cenário:</p>
+
+<img class="scenario"
+src="https://images.unsplash.com/photo-1555215695-3004980ad54e">
+
+<img class="scenario"
+src="https://images.unsplash.com/photo-1503376780353-7e6692767b70">
+
+<img class="scenario"
+src="https://images.unsplash.com/photo-1583121274602-3e2820c69888">
+
+<img class="scenario"
+src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a">
+
+</div>
+
+<!-- PERFIL -->
+<div id="perfil" class="page">
+
+<h1>Perfil</h1>
 
 <p>Seu perfil aparecerá aqui.</p>
 
 </div>
 
+<!-- MENU -->
+<nav>
+
+<button onclick="goPage('inicio')">Início</button>
+
+<button onclick="goPage('criar')">Criar</button>
+
+<button onclick="goPage('cenarios')">Cenários</button>
+
+<button onclick="goPage('perfil')">Perfil</button>
+
+</nav>
+
 <script>
 
-function showPage(page){
+function goPage(page){
 
-document.querySelectorAll('.page').forEach(p=>{
-p.classList.remove('active')
-})
+document.querySelectorAll('.page')
+.forEach(p=>p.classList.remove('active'))
 
-document.getElementById(page).classList.add('active')
+document.getElementById(page)
+.classList.add('active')
 
 }
 
-document.getElementById('photoInput').addEventListener('change', function(){
+function generateAI(){
 
-const preview = document.getElementById('preview')
-preview.innerHTML = ''
+const prompt =
+document.getElementById('prompt').value
 
-Array.from(this.files).slice(0,3).forEach(file=>{
+const result =
+document.getElementById('result')
 
-const img = document.createElement('img')
-img.src = URL.createObjectURL(file)
-preview.appendChild(img)
+result.innerHTML =
+`
+<h3>Gerando imagem com IA...</h3>
 
-})
+<img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab">
 
-})
+<p>Prompt usado: ${prompt}</p>
+
+<p>Imagem gerada com sucesso.</p>
+`
+
+}
 
 </script>
 

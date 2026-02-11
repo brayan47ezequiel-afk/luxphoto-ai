@@ -1,82 +1,261 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title><style>
-body {
-margin: 0;
-padding: 0;
-font-family: Arial, sans-serif;
-background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
-color: white;
-display: flex;
-justify-content: center;
-align-items: center;
-height: 100vh;
+
+<title>LuxPhoto AI</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(180deg,#0f2027,#203a43,#2c5364);
+color:white;
 }
 
-.container {
-text-align: center;
-background: rgba(0,0,0,0.3);
-padding: 30px;
-border-radius: 15px;
+header{
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+background:rgba(0,0,0,0.3);
 }
 
-h1 {
-margin-bottom: 20px;
+nav{
+display:flex;
+justify-content:space-around;
+background:rgba(0,0,0,0.4);
+padding:10px;
 }
 
-input {
-margin-bottom: 20px;
+nav button{
+background:none;
+border:none;
+color:white;
+font-size:16px;
 }
 
-button {
-padding: 15px 25px;
-font-size: 18px;
-border: none;
-border-radius: 10px;
-background: #00c6ff;
-color: white;
-cursor: pointer;
+.page{
+display:none;
+padding:20px;
 }
 
-button:hover {
-background: #0072ff;
+.active{
+display:block;
 }
 
-#status {
-margin-top: 20px;
-font-size: 16px;
+.container{
+background:rgba(0,0,0,0.4);
+padding:20px;
+border-radius:15px;
+margin-top:15px;
 }
-</style></head>
-<body><div class="container"><h1>LuxPhoto AI</h1><input type="file" id="fileInput" accept="image/*"><br><button id="uploadBtn">Upload Photo</button>
 
-<p id="status"></p></div><script>
+button.primary{
+background:#1e90ff;
+border:none;
+padding:15px;
+border-radius:10px;
+color:white;
+font-size:16px;
+width:100%;
+margin-top:10px;
+}
 
-const uploadBtn = document.getElementById("uploadBtn");
-const fileInput = document.getElementById("fileInput");
-const statusText = document.getElementById("status");
+.preview img{
+width:100px;
+border-radius:10px;
+margin:5px;
+}
 
-uploadBtn.addEventListener("click", function(){
+.template img{
+width:100%;
+border-radius:10px;
+margin-top:10px;
+}
 
-if(fileInput.files.length === 0){
+textarea{
+width:100%;
+height:80px;
+border-radius:10px;
+border:none;
+padding:10px;
+margin-top:10px;
+}
 
-statusText.innerText = "Please select a photo first.";
+</style>
+
+</head>
+<body>
+
+<header>
+LuxPhoto AI
+</header>
+
+<nav>
+
+<button onclick="showPage('home')">Home</button>
+
+<button onclick="showPage('create')">Criar</button>
+
+<button onclick="showPage('gallery')">Galeria</button>
+
+</nav>
+
+
+<!-- HOME -->
+<div id="home" class="page active">
+
+<div class="container">
+
+<h2>Bem-vindo</h2>
+
+<p>
+Crie fotos profissionais com IA.
+</p>
+
+<button class="primary" onclick="showPage('create')">
+Começar
+</button>
+
+</div>
+
+</div>
+
+
+
+<!-- CREATE -->
+<div id="create" class="page">
+
+<div class="container">
+
+<h2>Enviar fotos</h2>
+
+<input type="file" id="fileInput" multiple accept="image/*">
+
+<div class="preview" id="preview"></div>
+
+<textarea id="prompt"
+placeholder="Descreva o que deseja. Ex: Eu em uma BMW na praia ao pôr do sol">
+</textarea>
+
+<button class="primary" onclick="enviar()">
+Gerar imagem
+</button>
+
+<p id="status"></p>
+
+</div>
+
+</div>
+
+
+
+<!-- GALLERY -->
+<div id="gallery" class="page">
+
+<div class="container">
+
+<h2>Templates</h2>
+
+<div class="template">
+<img src="https://images.unsplash.com/photo-1555215695-3004980ad54a">
+<p>BMW Luxo</p>
+</div>
+
+<div class="template">
+<img src="https://images.unsplash.com/photo-1558981285-6f0c94958bb6">
+<p>Moto BMW</p>
+</div>
+
+<div class="template">
+<img src="https://images.unsplash.com/photo-1549921296-3ecf9fba6f7c">
+<p>Carro esportivo</p>
+</div>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+let fotos=[];
+
+function showPage(page){
+
+document.querySelectorAll(".page").forEach(p=>{
+
+p.classList.remove("active");
+
+});
+
+document.getElementById(page).classList.add("active");
+
+}
+
+
+
+document.getElementById("fileInput").addEventListener("change",function(){
+
+const preview=document.getElementById("preview");
+
+preview.innerHTML="";
+
+fotos=[];
+
+for(let file of this.files){
+
+fotos.push(file);
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+const img=document.createElement("img");
+
+img.src=e.target.result;
+
+preview.appendChild(img);
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+
+
+function enviar(){
+
+const prompt=document.getElementById("prompt").value;
+
+if(fotos.length==0){
+
+document.getElementById("status").innerText="Envie uma foto.";
+
 return;
 
 }
 
-const file = fileInput.files[0];
+if(prompt==""){
 
-statusText.innerText = "Uploading photo...";
+document.getElementById("status").innerText="Digite o prompt.";
 
-setTimeout(function(){
+return;
 
-statusText.innerText = "Photo uploaded successfully.";
+}
 
-}, 1500);
+document.getElementById("status").innerText="Pronto para conectar com IA.";
 
-});
+}
 
-</script></body>
+</script>
+
+</body>
 </html>

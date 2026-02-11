@@ -3,116 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>LuxPhoto AI</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
 background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
-text-align:center;
 }
 
-.container{
-margin-top:50px;
+/* topo */
+.topo{
+background:rgba(0,0,0,0.4);
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+
+/* abas */
+.abas{
+display:flex;
+justify-content:space-around;
+background:rgba(0,0,0,0.3);
+}
+
+.aba{
+padding:12px;
+cursor:pointer;
+}
+
+.aba:hover{
+background:rgba(255,255,255,0.1);
+}
+
+/* telas */
+.tela{
+display:none;
+padding:20px;
+}
+
+.ativa{
+display:block;
+}
+
+/* card */
+.card{
 background:rgba(0,0,0,0.4);
 padding:20px;
 border-radius:15px;
-width:90%;
-max-width:400px;
-margin-left:auto;
-margin-right:auto;
+margin-top:20px;
 }
 
-button{
-background:#1e88ff;
+/* botão */
+.botao{
+background:#00c6ff;
 border:none;
 padding:15px;
 border-radius:10px;
 color:white;
-font-size:18px;
-margin-top:15px;
-width:100%;
+font-size:16px;
+cursor:pointer;
+margin-top:10px;
 }
 
-button:hover{
-background:#0066ff;
+.botao:hover{
+background:#0099cc;
 }
 
-#preview{
-margin-top:20px;
+/* preview imagens */
+.preview{
 display:flex;
-flex-wrap:wrap;
-justify-content:center;
 gap:10px;
+margin-top:10px;
 }
 
-#preview img{
-width:100px;
-height:100px;
+.preview img{
+width:90px;
+height:90px;
+border-radius:10px;
 object-fit:cover;
+}
+
+/* cenarios */
+.cenarios{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.cenario{
+width:100px;
+cursor:pointer;
+}
+
+.cenario img{
+width:100%;
 border-radius:10px;
 }
+
+.cenario p{
+font-size:12px;
+text-align:center;
+}
+
+textarea{
+width:100%;
+padding:10px;
+border-radius:10px;
+border:none;
+margin-top:10px;
+}
+
 </style>
 
 </head>
 <body>
 
-<div class="container">
+<div class="topo">LuxPhoto AI</div>
 
-<h1>LuxPhoto AI</h1>
+<div class="abas">
 
-<input type="file" id="fileInput" multiple accept="image/*">
+<div class="aba" onclick="mostrar('inicio')">Início</div>
 
-<button onclick="carregarFotos()">
-Carregar foto
-</button>
+<div class="aba" onclick="mostrar('criar')">Criar Foto</div>
+
+<div class="aba" onclick="mostrar('cenarios')">Cenários</div>
+
+<div class="aba" onclick="mostrar('minhas')">Minhas Fotos</div>
+
+</div>
+
+<!-- INICIO -->
+<div id="inicio" class="tela ativa">
+
+<div class="card">
+
+<h2>Bem-vindo ao LuxPhoto AI</h2>
+
+<p>Crie fotos profissionais com IA.</p>
+
+<p>Coloque você em cenários luxuosos como BMW, motos, praias e muito mais.</p>
+
+</div>
+
+</div>
+
+<!-- CRIAR -->
+<div id="criar" class="tela">
+
+<div class="card">
+
+<h3>Enviar suas fotos</h3>
+
+<input type="file" id="upload" multiple accept="image/*">
+
+<div class="preview" id="preview"></div>
+
+<h3>Descreva o que deseja</h3>
+
+<textarea id="prompt" placeholder="Exemplo: Quero estar em frente a uma BMW branca, estilo profissional, sem alterar meu rosto"></textarea>
+
+<button class="botao" onclick="gerar()">Gerar Foto</button>
 
 <p id="status"></p>
 
-<div id="preview"></div>
+</div>
+
+</div>
+
+<!-- CENARIOS -->
+<div id="cenarios" class="tela">
+
+<div class="card">
+
+<h3>Escolha um cenário</h3>
+
+<div class="cenarios">
+
+<div class="cenario">
+<img src="https://images.unsplash.com/photo-1555215695-3004980ad54c?w=400">
+<p>BMW</p>
+</div>
+
+<div class="cenario">
+<img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400">
+<p>Moto BMW</p>
+</div>
+
+<div class="cenario">
+<img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400">
+<p>Praia</p>
+</div>
+
+<div class="cenario">
+<img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=400">
+<p>Lamborghini</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MINHAS -->
+<div id="minhas" class="tela">
+
+<div class="card">
+
+<h3>Suas fotos aparecerão aqui</h3>
+
+<p>Em breve...</p>
+
+</div>
 
 </div>
 
 <script>
 
-function carregarFotos(){
+function mostrar(id){
 
-const input = document.getElementById("fileInput");
-const preview = document.getElementById("preview");
-const status = document.getElementById("status");
+document.querySelectorAll(".tela").forEach(t=>t.classList.remove("ativa"));
 
-preview.innerHTML = "";
+document.getElementById(id).classList.add("ativa");
 
-if(input.files.length === 0){
-status.innerText = "Selecione uma foto primeiro.";
-return;
 }
 
-status.innerText = "Carregando...";
+const upload = document.getElementById("upload");
 
-for(let i=0; i<input.files.length; i++){
+const preview = document.getElementById("preview");
 
-const file = input.files[i];
+upload.addEventListener("change",function(){
 
-const reader = new FileReader();
+preview.innerHTML="";
 
-reader.onload = function(e){
+let arquivos = Array.from(upload.files).slice(0,3);
 
-const img = document.createElement("img");
+arquivos.forEach(file=>{
 
-img.src = e.target.result;
+let img=document.createElement("img");
+
+img.src=URL.createObjectURL(file);
 
 preview.appendChild(img);
 
+});
+
+});
+
+function gerar(){
+
+let prompt=document.getElementById("prompt").value;
+
+if(upload.files.length==0){
+
+alert("Envie uma foto");
+
+return;
+
 }
 
-reader.readAsDataURL(file);
+if(prompt==""){
+
+alert("Escreva um prompt");
+
+return;
 
 }
 
-status.innerText = "Fotos carregadas com sucesso.";
+document.getElementById("status").innerText="IA será conectada aqui.";
 
 }
 

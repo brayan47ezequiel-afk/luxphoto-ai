@@ -50,14 +50,12 @@ border-radius:10px;
 margin-top:15px;
 }
 
-input, button, textarea{
-
+input, textarea, button{
 width:100%;
 padding:12px;
 margin-top:10px;
 border-radius:8px;
 border:none;
-
 }
 
 input, textarea{
@@ -83,6 +81,12 @@ margin-top:10px;
 border-radius:8px;
 }
 
+img{
+width:100%;
+border-radius:8px;
+margin-top:10px;
+}
+
 </style>
 
 </head>
@@ -106,7 +110,6 @@ border-radius:8px;
 
 </header>
 
-
 <div class="container">
 
 
@@ -115,8 +118,6 @@ border-radius:8px;
 <div class="card">
 
 <h2>Bem-vindo ao LuxPhoto AI</h2>
-
-<p>Crie fotos com Inteligência Artificial.</p>
 
 <button onclick="showLogin()">Entrar</button>
 
@@ -155,11 +156,11 @@ border-radius:8px;
 
 <div id="createScreen" class="hidden">
 
-<h2>Criar Foto com IA</h2>
+<h2>Criar imagem com IA</h2>
 
-<textarea id="prompt" placeholder="Descreva a foto..."></textarea>
+<textarea id="prompt" placeholder="Descreva a imagem"></textarea>
 
-<button onclick="generate()">Gerar Foto</button>
+<button onclick="generate()">Gerar imagem</button>
 
 <div id="result"></div>
 
@@ -168,9 +169,11 @@ border-radius:8px;
 
 <div id="profileScreen" class="hidden">
 
-<h2>Perfil</h2>
+<h2>Seu perfil</h2>
 
 <div id="profileInfo"></div>
+
+<div id="myImages"></div>
 
 </div>
 
@@ -180,7 +183,7 @@ border-radius:8px;
 
 <script>
 
-let currentUser = null;
+let currentUser=null;
 
 
 function getUsers(){
@@ -196,10 +199,20 @@ localStorage.setItem("users", JSON.stringify(users));
 }
 
 
+function hideAll(){
+
+document.getElementById("homeScreen").classList.add("hidden");
+document.getElementById("loginScreen").classList.add("hidden");
+document.getElementById("registerScreen").classList.add("hidden");
+document.getElementById("createScreen").classList.add("hidden");
+document.getElementById("profileScreen").classList.add("hidden");
+
+}
+
+
 function showHome(){
 
 hideAll();
-
 document.getElementById("homeScreen").classList.remove("hidden");
 
 }
@@ -208,7 +221,6 @@ document.getElementById("homeScreen").classList.remove("hidden");
 function showLogin(){
 
 hideAll();
-
 document.getElementById("loginScreen").classList.remove("hidden");
 
 }
@@ -217,7 +229,6 @@ document.getElementById("loginScreen").classList.remove("hidden");
 function showRegister(){
 
 hideAll();
-
 document.getElementById("registerScreen").classList.remove("hidden");
 
 }
@@ -226,7 +237,6 @@ document.getElementById("registerScreen").classList.remove("hidden");
 function showCreate(){
 
 hideAll();
-
 document.getElementById("createScreen").classList.remove("hidden");
 
 }
@@ -238,20 +248,27 @@ hideAll();
 
 document.getElementById("profileScreen").classList.remove("hidden");
 
+let users=getUsers();
+
+let user=users[currentUser];
+
 document.getElementById("profileInfo").innerHTML=
 
-"Usuário: "+currentUser;
+"Usuário: "+currentUser+"<br>Imagens: "+(user.images?.length||0);
+
+let html="";
+
+if(user.images){
+
+user.images.forEach(img=>{
+
+html+="<img src='"+img+"'>";
+
+});
 
 }
 
-
-function hideAll(){
-
-document.getElementById("homeScreen").classList.add("hidden");
-document.getElementById("loginScreen").classList.add("hidden");
-document.getElementById("registerScreen").classList.add("hidden");
-document.getElementById("createScreen").classList.add("hidden");
-document.getElementById("profileScreen").classList.add("hidden");
+document.getElementById("myImages").innerHTML=html;
 
 }
 
@@ -265,12 +282,12 @@ let users=getUsers();
 
 if(users[u]){
 
-alert("Usuário existe");
+alert("Usuário já existe");
 return;
 
 }
 
-users[u]={password:p};
+users[u]={password:p, images:[]};
 
 saveUsers(users);
 
@@ -290,7 +307,7 @@ let users=getUsers();
 
 if(!users[u]||users[u].password!=p){
 
-alert("Login errado");
+alert("Erro no login");
 return;
 
 }
@@ -315,14 +332,24 @@ function generate(){
 
 let prompt=document.getElementById("prompt").value;
 
+let image="https://picsum.photos/500?random="+Math.random();
+
 document.getElementById("result").innerHTML=
 
-"<div class='post'>Foto criada com IA:<br>"+prompt+"</div>";
+"<div class='post'>"+
+"<b>"+prompt+"</b>"+
+"<img src='"+image+"'>"+
+"</div>";
+
+let users=getUsers();
+
+users[currentUser].images.push(image);
+
+saveUsers(users);
 
 }
 
 </script>
-
 
 </body>
 </html>

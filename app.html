@@ -1,135 +1,75 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LuxPhoto AI</title>
-
-<style>
+<title>Minha IA App</title><style>
 body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
-  color:white;
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+}
+
+header{
+background:#020617;
+padding:15px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
 }
 
 nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px;
-  background:#000;
+display:flex;
+justify-content:space-around;
+background:#020617;
+padding:10px;
 }
 
-nav h2{
-  color:#00ff88;
-}
-
-nav a{
-  color:white;
-  text-decoration:none;
-  margin-left:15px;
+nav button{
+background:none;
+border:none;
+color:white;
+font-size:16px;
 }
 
 .container{
-  display:flex;
-  justify-content:center;
-  margin-top:50px;
+padding:20px;
+}
+
+textarea{
+width:100%;
+height:120px;
+border-radius:10px;
+border:none;
+padding:10px;
+}
+
+button.enviar{
+width:100%;
+margin-top:10px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:white;
+font-size:16px;
 }
 
 .card{
-  background:#111;
-  padding:25px;
-  border-radius:15px;
-  width:90%;
-  max-width:400px;
-  box-shadow:0 0 20px rgba(0,255,136,0.2);
+background:#020617;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
 }
-
-input, textarea{
-  width:100%;
-  margin-top:15px;
-  padding:12px;
-  border-radius:10px;
-  border:none;
-  outline:none;
-  font-size:14px;
-}
-
-button{
-  width:100%;
-  margin-top:20px;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#00ff88;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button:hover{
-  opacity:0.8;
-}
-
-#preview{
-  width:100%;
-  margin-top:20px;
-  border-radius:12px;
-  display:none;
-}
-</style>
-</head>
-
-<body>
-
-<nav>
-  <h2>LuxPhoto AI</h2>
-  <div>
-    <a href="index.html">Home</a>
-    <a href="app.html">Criar</a>
-    <a href="#">Perfil</a>
-  </div>
-</nav>
-
-<div class="container">
-  <div class="card">
-    <h2>Criar imagem com IA</h2>
-
-    <input type="file" id="upload" accept="image/*">
-    <textarea id="prompt" placeholder="Descreva o que você quer..."></textarea>
-    <button onclick="gerarImagem()">Gerar imagem</button>
-
-    <img id="preview">
-  </div>
-</div>
-
-<script>
-function gerarImagem(){
-
-  let upload = document.getElementById("upload");
-  let prompt = document.getElementById("prompt").value;
-
-  if(upload.files.length === 0){
-    alert("Escolha uma imagem");
-    return;
-  }
-
-  if(prompt.trim() === ""){
-    alert("Digite um prompt");
-    return;
-  }
-
-  let reader = new FileReader();
-
-  reader.onload = function(e){
-    let preview = document.getElementById("preview");
-    preview.src = e.target.result;
-    preview.style.display = "block";
-  }
-
-  reader.readAsDataURL(upload.files[0]);
-}
-</script>
-
-</body>
+</style></head><body><header>
+Minha IA App
+</header><nav>
+<button>Início</button>
+<button>Criar</button>
+<button>Perfil</button>
+</nav><div class="container"><h2>Criar com IA</h2><textarea placeholder="Digite seu prompt aqui..."></textarea><button class="enviar">
+Gerar
+</button><div class="card">
+Resultado aparecerá aqui
+</div></div></body>
 </html>

@@ -1,11 +1,16 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minha IA App</title><style>
+
+<title>LuxPhoto AI</title>
+
+<style>
+
 body{
 margin:0;
-font-family:Arial;
+font-family:Arial, sans-serif;
 background:#0f172a;
 color:white;
 }
@@ -18,58 +23,313 @@ font-size:20px;
 font-weight:bold;
 }
 
-nav{
-display:flex;
-justify-content:space-around;
-background:#020617;
-padding:10px;
-}
-
-nav button{
-background:none;
-border:none;
-color:white;
-font-size:16px;
-}
-
 .container{
-padding:20px;
-}
-
-textarea{
-width:100%;
-height:120px;
-border-radius:10px;
-border:none;
-padding:10px;
-}
-
-button.enviar{
-width:100%;
-margin-top:10px;
 padding:15px;
+max-width:600px;
+margin:auto;
+}
+
+input, textarea, button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
 border:none;
-border-radius:10px;
+}
+
+input, textarea{
+background:#020617;
+color:white;
+border:1px solid #334155;
+}
+
+button{
 background:#2563eb;
 color:white;
-font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
 }
 
 .card{
 background:#020617;
 padding:15px;
-border-radius:10px;
 margin-top:15px;
+border-radius:10px;
 }
-</style></head><body><header>
-Minha IA App
-</header><nav>
-<button>Início</button>
-<button>Criar</button>
-<button>Perfil</button>
-</nav><div class="container"><h2>Criar com IA</h2><textarea placeholder="Digite seu prompt aqui..."></textarea><button class="enviar">
-Gerar
-</button><div class="card">
-Resultado aparecerá aqui
-</div></div></body>
+
+.nav{
+position:fixed;
+bottom:0;
+width:100%;
+background:#020617;
+display:flex;
+}
+
+.nav button{
+flex:1;
+border-radius:0;
+background:#020617;
+}
+
+.hidden{
+display:none;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+LuxPhoto AI
+</header>
+
+<div class="container">
+
+<div id="loginScreen">
+
+<h2>Login</h2>
+
+<input id="loginUser" placeholder="Usuário">
+
+<input id="loginPass" type="password" placeholder="Senha">
+
+<button onclick="login()">Entrar</button>
+
+<button onclick="showRegister()">Criar Conta</button>
+
+</div>
+
+
+<div id="registerScreen" class="hidden">
+
+<h2>Criar Conta</h2>
+
+<input id="registerUser" placeholder="Usuário">
+
+<input id="registerPass" type="password" placeholder="Senha">
+
+<button onclick="register()">Criar</button>
+
+<button onclick="showLogin()">Voltar</button>
+
+</div>
+
+
+<div id="appScreen" class="hidden">
+
+<h2>Feed</h2>
+
+<textarea id="postText" placeholder="O que você quer postar?"></textarea>
+
+<button onclick="createPost()">Postar</button>
+
+<div id="feed"></div>
+
+</div>
+
+
+<div id="profileScreen" class="hidden">
+
+<h2>Perfil</h2>
+
+<div id="profileInfo"></div>
+
+</div>
+
+</div>
+
+
+<div class="nav hidden" id="navBar">
+
+<button onclick="showFeed()">Feed</button>
+
+<button onclick="showProfile()">Perfil</button>
+
+<button onclick="logout()">Sair</button>
+
+</div>
+
+
+<script>
+
+let currentUser = null;
+
+
+function saveUsers(users){
+
+localStorage.setItem("users", JSON.stringify(users));
+
+}
+
+
+function getUsers(){
+
+return JSON.parse(localStorage.getItem("users") || "{}");
+
+}
+
+
+function register(){
+
+let user = document.getElementById("registerUser").value;
+let pass = document.getElementById("registerPass").value;
+
+let users = getUsers();
+
+if(users[user]){
+alert("Usuário já existe");
+return;
+}
+
+users[user] = {password:pass, posts:[]};
+
+saveUsers(users);
+
+alert("Conta criada");
+
+showLogin();
+
+}
+
+
+function login(){
+
+let user = document.getElementById("loginUser").value;
+let pass = document.getElementById("loginPass").value;
+
+let users = getUsers();
+
+if(!users[user] || users[user].password != pass){
+
+alert("Login inválido");
+
+return;
+
+}
+
+currentUser = user;
+
+document.getElementById("loginScreen").classList.add("hidden");
+
+document.getElementById("navBar").classList.remove("hidden");
+
+showFeed();
+
+}
+
+
+function logout(){
+
+currentUser = null;
+
+location.reload();
+
+}
+
+
+function showRegister(){
+
+document.getElementById("loginScreen").classList.add("hidden");
+
+document.getElementById("registerScreen").classList.remove("hidden");
+
+}
+
+
+function showLogin(){
+
+document.getElementById("registerScreen").classList.add("hidden");
+
+document.getElementById("loginScreen").classList.remove("hidden");
+
+}
+
+
+function showFeed(){
+
+document.getElementById("appScreen").classList.remove("hidden");
+
+document.getElementById("profileScreen").classList.add("hidden");
+
+loadFeed();
+
+}
+
+
+function showProfile(){
+
+document.getElementById("profileScreen").classList.remove("hidden");
+
+document.getElementById("appScreen").classList.add("hidden");
+
+document.getElementById("profileInfo").innerHTML =
+"Usuário: " + currentUser;
+
+}
+
+
+function createPost(){
+
+let text = document.getElementById("postText").value;
+
+if(text == "") return;
+
+let users = getUsers();
+
+users[currentUser].posts.push({
+
+text:text,
+date:new Date().toLocaleString()
+
+});
+
+saveUsers(users);
+
+document.getElementById("postText").value = "";
+
+loadFeed();
+
+}
+
+
+function loadFeed(){
+
+let users = getUsers();
+
+let feed = document.getElementById("feed");
+
+feed.innerHTML = "";
+
+for(let user in users){
+
+users[user].posts.forEach(post => {
+
+feed.innerHTML += `
+
+<div class="card">
+
+<b>${user}</b><br>
+
+${post.text}
+
+<br><small>${post.date}</small>
+
+</div>
+
+`;
+
+});
+
+}
+
+}
+
+</script>
+
+</body>
 </html>

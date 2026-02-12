@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>LuxPhoto AI</title>
 
 <style>
@@ -16,64 +17,80 @@ color:white;
 
 nav{
 display:flex;
-justify-content:space-around;
-background:#111;
+justify-content:space-between;
+align-items:center;
 padding:15px;
-position:fixed;
-width:100%;
-bottom:0;
+background:#111;
+border-bottom:1px solid #222;
 }
 
-nav button{
+.logo{
+font-size:20px;
+font-weight:bold;
+color:#00ff88;
+}
+
+.menu button{
 background:none;
 border:none;
 color:white;
-font-size:16px;
+margin-left:10px;
+font-size:15px;
+cursor:pointer;
 }
 
-.page{
-display:none;
+.menu button:hover{
+color:#00ff88;
+}
+
+.container{
 padding:20px;
-padding-bottom:80px;
 }
 
-.active{
-display:block;
-}
-
-h1{
-font-size:28px;
-}
-
-button.main{
-background:linear-gradient(45deg,#00c6ff,#0072ff);
-border:none;
-padding:15px;
-color:white;
+.card{
+background:#111;
+padding:20px;
 border-radius:10px;
-width:100%;
-margin-top:10px;
-font-size:16px;
+margin-bottom:20px;
+border:1px solid #222;
 }
 
 input, textarea{
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:10px;
-border-radius:8px;
-border:none;
-background:#222;
+background:#0a0a0a;
+border:1px solid #333;
 color:white;
+border-radius:5px;
 }
 
-img{
-width:100%;
-border-radius:10px;
+button.action{
 margin-top:10px;
+padding:12px;
+background:#00ff88;
+border:none;
+color:black;
+font-weight:bold;
+border-radius:5px;
+cursor:pointer;
 }
 
-.scenario{
+button.action:hover{
+opacity:0.8;
+}
+
+.image-preview{
 margin-top:15px;
+}
+
+.image-preview img{
+max-width:100%;
+border-radius:10px;
+}
+
+.hidden{
+display:none;
 }
 
 </style>
@@ -81,113 +98,122 @@ margin-top:15px;
 </head>
 <body>
 
-<!-- INICIO -->
-<div id="inicio" class="page active">
-
-<h1>LuxPhoto AI</h1>
-
-<p>
-Transforme suas fotos em fotos profissionais com inteligência artificial.
-</p>
-
-<img src="https://images.unsplash.com/photo-1517949908114-721b3d7a55f0">
-
-<button class="main" onclick="goPage('criar')">
-Começar agora
-</button>
-
-</div>
-
-<!-- CRIAR -->
-<div id="criar" class="page">
-
-<h1>Criar Foto com IA</h1>
-
-<input type="file" accept="image/*" id="upload">
-
-<textarea id="prompt" placeholder="Ex: eu em uma BMW, foto profissional, realista"></textarea>
-
-<button class="main" onclick="generateAI()">
-Gerar com IA
-</button>
-
-<div id="result"></div>
-
-</div>
-
-<!-- CENARIOS -->
-<div id="cenarios" class="page">
-
-<h1>Cenários</h1>
-
-<p>Escolha um cenário:</p>
-
-<img class="scenario"
-src="https://images.unsplash.com/photo-1555215695-3004980ad54e">
-
-<img class="scenario"
-src="https://images.unsplash.com/photo-1503376780353-7e6692767b70">
-
-<img class="scenario"
-src="https://images.unsplash.com/photo-1583121274602-3e2820c69888">
-
-<img class="scenario"
-src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a">
-
-</div>
-
-<!-- PERFIL -->
-<div id="perfil" class="page">
-
-<h1>Perfil</h1>
-
-<p>Seu perfil aparecerá aqui.</p>
-
-</div>
-
-<!-- MENU -->
 <nav>
 
-<button onclick="goPage('inicio')">Início</button>
+<div class="logo">LuxPhoto AI</div>
 
-<button onclick="goPage('criar')">Criar</button>
+<div class="menu">
 
-<button onclick="goPage('cenarios')">Cenários</button>
+<button onclick="abrirPagina('home')">Home</button>
 
-<button onclick="goPage('perfil')">Perfil</button>
+<button onclick="abrirPagina('criar')">Criar</button>
+
+<button onclick="abrirPagina('perfil')">Perfil</button>
+
+</div>
 
 </nav>
 
+<div class="container">
+
+<div id="home" class="card">
+
+<h2>Bem-vindo ao LuxPhoto AI</h2>
+
+<p>
+Crie fotos com Inteligência Artificial.
+Transforme imagens normais em fotos profissionais.
+</p>
+
+</div>
+
+
+<div id="criar" class="card hidden">
+
+<h2>Criar imagem com IA</h2>
+
+<input type="file" id="upload">
+
+<textarea id="prompt" placeholder="Descreva o que você quer..."></textarea>
+
+<button class="action" onclick="gerar()">Gerar imagem</button>
+
+<div class="image-preview" id="resultado"></div>
+
+</div>
+
+
+<div id="perfil" class="card hidden">
+
+<h2>Seu perfil</h2>
+
+<p>ID do usuário:</p>
+
+<p id="userid"></p>
+
+<p>Imagens criadas: 0</p>
+
+</div>
+
+</div>
+
+
 <script>
 
-function goPage(page){
+let usuario = localStorage.getItem("luxphoto_user");
 
-document.querySelectorAll('.page')
-.forEach(p=>p.classList.remove('active'))
+if(!usuario){
 
-document.getElementById(page)
-.classList.add('active')
+usuario = "user_" + Math.floor(Math.random()*1000000);
+
+localStorage.setItem("luxphoto_user", usuario);
 
 }
 
-function generateAI(){
+document.getElementById("userid").innerText = usuario;
 
-const prompt =
-document.getElementById('prompt').value
 
-const result =
-document.getElementById('result')
+function abrirPagina(pagina){
 
-result.innerHTML =
-`
-<h3>Gerando imagem com IA...</h3>
+document.getElementById("home").classList.add("hidden");
 
-<img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab">
+document.getElementById("criar").classList.add("hidden");
 
-<p>Prompt usado: ${prompt}</p>
+document.getElementById("perfil").classList.add("hidden");
 
-<p>Imagem gerada com sucesso.</p>
-`
+document.getElementById(pagina).classList.remove("hidden");
+
+}
+
+
+
+function gerar(){
+
+let arquivo = document.getElementById("upload").files[0];
+
+let prompt = document.getElementById("prompt").value;
+
+if(!arquivo){
+
+alert("Escolha uma imagem");
+
+return;
+
+}
+
+let reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("resultado").innerHTML =
+
+"<p>Imagem gerada com sucesso:</p>" +
+
+"<img src='"+e.target.result+"'>";
+
+};
+
+reader.readAsDataURL(arquivo);
 
 }
 
